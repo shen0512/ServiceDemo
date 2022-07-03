@@ -25,7 +25,7 @@ public class TestREST {
 	
 	@PostMapping("/test")
 	@ResponseBody
-    public Object get(@RequestBody Object requestBody) {
+    public Object getTest(@RequestBody Object requestBody) {
 		Gson gson = new Gson();
 		String requestBodyStr = gson.toJson(requestBody);
 		

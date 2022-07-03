@@ -1,3 +1,0 @@
-server.ssl.key-store=classpath:keystore.jks
-server.ssl.key-store-password=123456789
-server.ssl.key-password=123456789

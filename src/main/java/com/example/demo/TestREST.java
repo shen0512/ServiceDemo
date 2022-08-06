@@ -1,8 +1,17 @@
 package com.example.demo;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.google.gson.Gson;
@@ -39,5 +48,40 @@ public class TestREST {
 			return gson.toJson(r);
 		}
 		
+    }
+	
+	@PostMapping("/fileUpload")
+	@ResponseBody
+    public Object testVideo(@RequestParam("files") MultipartFile[] uploadfiles, @RequestParam("msg") String msg) {
+		Gson gson = new Gson();
+		try {
+			saveUploadedFiles(Arrays.asList(uploadfiles));
+			
+			ResponseStatus r = new ResponseStatus("accept","", msg);
+			return gson.toJson(r);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			ResponseStatus r = new ResponseStatus("error","file error or msg not found", "");
+			return gson.toJson(r);
+		}
+		
+    }
+	
+    private void saveUploadedFiles(List<MultipartFile> files) throws IOException {
+
+        for (MultipartFile file : files) {
+
+            if (file.isEmpty()) {
+                continue; //繼續下一個檔案
+            }
+
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("./data/" + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+        }
+
     }
 }
